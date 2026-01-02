@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4. Sinif Burs Sinavi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 30px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; color: white; margin-bottom: 40px; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .teacher-login { text-align: center; margin-bottom: 30px; }
+        .teacher-btn { background: #8e44ad; color: white; padding: 20px 50px; font-size: 20px; font-weight: bold; border: none; border-radius: 15px; cursor: pointer; }
+        .teacher-btn:hover { background: #7d3c98; }
+        .tests-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .test-card { background: white; padding: 25px; border-radius: 15px; text-align: center; text-decoration: none; color: #2c3e50; transition: all 0.3s; }
+        .test-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .test-card .icon { font-size: 40px; margin-bottom: 10px; }
+        .test-card h3 { color: #8e44ad; margin-bottom: 5px; }
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); overflow: auto; }
+        .modal-content { background: white; margin: 2% auto; padding: 30px; border-radius: 20px; width: 98%; max-width: 1400px; }
+        .modal-content h2 { color: #8e44ad; margin-bottom: 20px; text-align: center; }
+        .close-btn { float: right; font-size: 30px; cursor: pointer; color: #666; }
+        .close-btn:hover { color: red; }
+        .password-section { text-align: center; padding: 30px; }
+        .password-section input { padding: 15px; font-size: 18px; border: 2px solid #ddd; border-radius: 10px; width: 300px; }
+        .password-section button { display: block; margin: 15px auto; padding: 15px 40px; font-size: 18px; background: #8e44ad; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        .results-section { display: none; }
+        .results-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        .results-table th, .results-table td { padding: 10px 8px; text-align: center; border: 1px solid #ddd; }
+        .results-table th { background: #8e44ad; color: white; font-size: 12px; }
+        .results-table tr:nth-child(even) { background: #f9f9f9; }
+        .results-table tr:hover { background: #e8f4e8; }
+        .stats-box { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: #8e44ad; color: white; padding: 15px; border-radius: 10px; text-align: center; }
+        .stat-card .value { font-size: 28px; font-weight: bold; }
+        .stat-card .label { font-size: 12px; opacity: 0.9; }
+        .refresh-btn { background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
+        .good { color: green; font-weight: bold; }
+        .medium { color: orange; font-weight: bold; }
+        .bad { color: red; font-weight: bold; }
+        .correct { color: #27ae60; }
+        .wrong { color: #e74c3c; }
+        .empty { color: #95a5a6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>4. Sinif Burs Sinavi</h1>
+            <p style="color:white;opacity:0.9">10 Deneme Sinavi - Her biri 60 Soru</p>
+        </div>
+        <div class="teacher-login">
+            <button class="teacher-btn" onclick="document.getElementById('teacherModal').style.display='block'">OGRETMEN PANELI</button>
+        </div>
+        <div class="tests-grid">
+            <a href="deneme-01.html" class="test-card"><div class="icon">1</div><h3>Deneme 1</h3></a>
+            <a href="deneme-02.html" class="test-card"><div class="icon">2</div><h3>Deneme 2</h3></a>
+            <a href="deneme-03.html" class="test-card"><div class="icon">3</div><h3>Deneme 3</h3></a>
+            <a href="deneme-04.html" class="test-card"><div class="icon">4</div><h3>Deneme 4</h3></a>
+            <a href="deneme-05.html" class="test-card"><div class="icon">5</div><h3>Deneme 5</h3></a>
+            <a href="deneme-06.html" class="test-card"><div class="icon">6</div><h3>Deneme 6</h3></a>
+            <a href="deneme-07.html" class="test-card"><div class="icon">7</div><h3>Deneme 7</h3></a>
+            <a href="deneme-08.html" class="test-card"><div class="icon">8</div><h3>Deneme 8</h3></a>
+            <a href="deneme-09.html" class="test-card"><div class="icon">9</div><h3>Deneme 9</h3></a>
+            <a href="deneme-10.html" class="test-card"><div class="icon">10</div><h3>Deneme 10</h3></a>
+        </div>
+    </div>
+
+    <div id="teacherModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('teacherModal').style.display='none'">&times;</span>
+            <h2>Ogretmen Paneli</h2>
+            <div class="password-section" id="passwordSection">
+                <input type="password" id="teacherPassword" placeholder="Sifre giriniz" onkeypress="if(event.key==='Enter')checkPassword()">
+                <button onclick="checkPassword()">Giris Yap</button>
+            </div>
+            <div class="results-section" id="resultsSection">
+                <button class="refresh-btn" onclick="loadResults()">🔄 Yenile</button>
+                <div class="stats-box" id="statsBox"></div>
+                <div id="resultsContainer">Yukluyor...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function checkPassword() {
+            var pw = document.getElementById('teacherPassword').value;
+            if (pw === '2024') {
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'block';
+                loadResults();
+            } else {
+                alert('Sifre yanlis!');
+            }
+        }
+
+        async function loadResults() {
+            var container = document.getElementById('resultsContainer');
+            container.innerHTML = 'Yukluyor...';
+            try {
+                var response = await fetch('https://ayaz-sinav-api.azurewebsites.net/api/results');
+                var data = await response.json();
+                if (data.success && data.results && data.results.length > 0) {
+                    var total = data.results.length;
+                    var avg = Math.round(data.results.reduce(function(a,b){return a+b.percentage},0)/total);
+                    var students = [];
+                    data.results.forEach(function(r){if(students.indexOf(r.studentName)===-1)students.push(r.studentName)});
+                    
+                    document.getElementById('statsBox').innerHTML = 
+                        '<div class="stat-card"><div class="label">Toplam Sinav</div><div class="value">'+total+'</div></div>' +
+                        '<div class="stat-card"><div class="label">Ogrenci Sayisi</div><div class="value">'+students.length+'</div></div>' +
+                        '<div class="stat-card"><div class="label">Ortalama Basari</div><div class="value">%'+avg+'</div></div>' +
+                        '<div class="stat-card"><div class="label">Son Sinav</div><div class="value">'+data.results[0].studentName+'</div></div>';
+                    
+                    var html = '<table class="results-table"><thead><tr>' +
+                        '<th>Ogrenci</th><th>Sinif</th><th>Deneme</th><th>Tarih</th><th>Sure</th>' +
+                        '<th>Mat</th><th>Fen</th><th>Sos</th><th>Tur</th>' +
+                        '<th class="correct">Dogru</th><th class="wrong">Yanlis</th><th class="empty">Bos</th><th>Basari</th>' +
+                        '</tr></thead><tbody>';
+                    
+                    data.results.forEach(function(r){
+                        var cls = r.percentage >= 70 ? 'good' : (r.percentage >= 50 ? 'medium' : 'bad');
+                        var duration = r.duration || '-';
+                        var empty = r.totalEmpty || (60 - r.totalCorrect - r.totalWrong);
+                        var wrong = r.totalWrong || 0;
+                        
+                        html += '<tr>' +
+                            '<td><b>'+r.studentName+'</b></td>' +
+                            '<td>'+r.studentClass+'</td>' +
+                            '<td>'+r.examNumber+'</td>' +
+                            '<td style="font-size:12px">'+r.examDate+'</td>' +
+                            '<td style="font-size:12px">'+duration+'</td>' +
+                            '<td>'+r.mathCorrect+'/15</td>' +
+                            '<td>'+r.scienceCorrect+'/15</td>' +
+                            '<td>'+r.socialCorrect+'/15</td>' +
+                            '<td>'+r.turkishCorrect+'/15</td>' +
+                            '<td class="correct"><b>'+r.totalCorrect+'</b></td>' +
+                            '<td class="wrong"><b>'+wrong+'</b></td>' +
+                            '<td class="empty"><b>'+empty+'</b></td>' +
+                            '<td class="'+cls+'">%'+r.percentage+'</td>' +
+                            '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = '<p style="text-align:center;color:#666;padding:40px;">Henuz sinav sonucu yok.</p>';
+                    document.getElementById('statsBox').innerHTML = '';
+                }
+            } catch(e) {
+                container.innerHTML = 'Hata: ' + e.message;
+            }
+        }
+
+        window.onclick = function(e) {
+            if (e.target.id === 'teacherModal') {
+                document.getElementById('teacherModal').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

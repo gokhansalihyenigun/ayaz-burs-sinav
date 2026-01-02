@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4. Sınıf Burs Sınavı - Deneme 4</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .header { text-align: center; border-bottom: 3px solid #2c3e50; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { color: #2c3e50; margin-bottom: 10px; }
+        .header p { color: #666; font-size: 14px; }
+        .timer-box { background: #e74c3c; color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; font-size: 24px; font-weight: bold; }
+        .timer-box.warning { background: #f39c12; }
+        .timer-box.danger { background: #e74c3c; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        
+        /* Başlangıç Ekranı */
+        .start-screen { text-align: center; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; margin-bottom: 30px; }
+        .start-screen h2 { font-size: 28px; margin-bottom: 30px; }
+        .start-form { background: white; padding: 30px; border-radius: 10px; max-width: 400px; margin: 0 auto; }
+        .start-form label { display: block; text-align: left; color: #333; font-weight: bold; margin-bottom: 5px; }
+        .start-form input { width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .start-form input:focus { outline: none; border-color: #667eea; }
+        .start-btn { background: #27ae60; color: white; padding: 15px 50px; font-size: 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .start-btn:hover { background: #229954; transform: scale(1.05); }
+        .start-btn:disabled { background: #95a5a6; cursor: not-allowed; transform: none; }
+        .error-msg { color: #e74c3c; font-size: 14px; margin-top: -15px; margin-bottom: 15px; text-align: left; display: none; }
+        
+        .exam-container { display: none; }
+        .student-info-display { background: #3498db; color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .student-info-display span { font-weight: bold; }
+        
+        .exam-info { text-align: center; background: #ecf0f1; color: #2c3e50; padding: 15px; border-radius: 8px; margin-bottom: 30px; font-weight: bold; }
+        .section-title { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 5px; margin-top: 30px; margin-bottom: 15px; font-size: 18px; font-weight: bold; }
+        .section-title.matematik { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .section-title.fen { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .section-title.sosyal { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .section-title.turkce { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #333; }
+        .question { margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-left: 4px solid #3498db; }
+        .question-num { font-weight: bold; color: #2c3e50; margin-bottom: 8px; font-size: 15px; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .option { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; user-select: none; transition: all 0.3s; }
+        .option:hover { background: #ecf0f1; }
+        .option input { margin-right: 8px; }
+        .button-group { display: flex; gap: 10px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 30px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .btn-submit { background: #27ae60; color: white; }
+        .btn-submit:hover { background: #229954; }
+        .btn-print { background: #3498db; color: white; }
+        .btn-print:hover { background: #2980b9; }
+        .btn-admin { background: #8e44ad; color: white; }
+        .btn-admin:hover { background: #7d3c98; }
+        .admin-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); }
+        .admin-content { background-color: white; margin: 10% auto; padding: 30px; border: 2px solid #8e44ad; border-radius: 10px; width: 90%; max-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .admin-content h2 { color: #8e44ad; margin-bottom: 20px; text-align: center; }
+        .admin-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+        .admin-input:focus { outline: none; border-color: #8e44ad; }
+        .admin-buttons { display: flex; gap: 10px; }
+        .admin-buttons button { flex: 1; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .admin-btn-ok { background: #8e44ad; color: white; }
+        .admin-btn-ok:hover { background: #7d3c98; }
+        .admin-btn-cancel { background: #e0e0e0; color: #333; }
+        .admin-btn-cancel:hover { background: #ccc; }
+        .result { display: none; margin-top: 20px; padding: 20px; background: #d4edda; border: 2px solid #28a745; border-radius: 5px; color: #155724; }
+        .result-header { background: #2c3e50; color: white; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
+        .answer-key { display: none; margin-top: 30px; padding: 20px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 5px; }
+        .answer-key h3 { color: #856404; margin-bottom: 15px; }
+        .answers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .answer-item { padding: 10px; background: white; border-radius: 4px; border-left: 4px solid #ffc107; }
+        .submitted-message { display: none; margin-top: 20px; padding: 20px; background: #cfe4fc; border: 2px solid #3498db; border-radius: 5px; color: #004085; text-align: center; font-weight: bold; }
+        @media print { 
+            body { background: white; padding: 0; } 
+            .container { box-shadow: none; padding: 0; } 
+            .button-group, .result, .answer-key, .timer-box, .admin-modal, .submitted-message, .start-screen { display: none !important; } 
+            .exam-container { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 4. SINIF BURS SINAVI</h1>
+            <p>Deneme Sınavı - 4</p>
+        </div>
+        
+        <!-- Başlangıç Ekranı -->
+        <div class="start-screen" id="startScreen">
+            <h2>🎯 Sınava Başlamadan Önce</h2>
+            <div class="start-form">
+                <label for="studentName">👤 Adınız Soyadınız:</label>
+                <input type="text" id="studentName" placeholder="Örn: Ayaz Yenigün" required>
+                <div class="error-msg" id="nameError">⚠️ Lütfen adınızı ve soyadınızı giriniz!</div>
+                
+                <label for="studentClass">🏫 Sınıfınız:</label>
+                <input type="text" id="studentClass" placeholder="Örn: 4-C" required>
+                <div class="error-msg" id="classError">⚠️ Lütfen sınıfınızı giriniz!</div>
+                
+                <button class="start-btn" onclick="startExam()">🚀 SINAVI BAŞLAT</button>
+            </div>
+        </div>
+        
+        <!-- Sınav Alanı (Gizli) -->
+        <div class="exam-container" id="examContainer">
+            <div class="timer-box" id="timerBox">
+                ⏱️ <span id="timerDisplay">60:00</span>
+            </div>
+            
+            <div class="student-info-display" id="studentInfoDisplay">
+                <span>👤 <span id="displayName">-</span></span>
+                <span>🏫 <span id="displayClass">-</span></span>
+                <span>📅 <span id="displayDate">-</span></span>
+            </div>
+            
+            <div class="exam-info">
+                ⏱️ Sınav Süresi: 120 Dakika | 📋 Toplam Soru: 60 (15+15+15+15)
+            </div>
+<div class="section-title matematik">📐 MATEMATİK (15 Soru)</div>
+        <div class="question">
+            <div class="question-num">Soru 1: 4.567 sayısını en yakın yüzlüğe yuvarlarsak kaç olur?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q1" value="A"> A) 4.500</label>
+                <label class="option"><input type="radio" name="q1" value="B"> B) 4.600</label>
+                <label class="option"><input type="radio" name="q1" value="C"> C) 4.570</label>
+                <label class="option"><input type="radio" name="q1" value="D"> D) 4.700</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 2: 3.456 sayısını en yakın yüzlüğe yuvarlarsak kaç olur?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q2" value="A"> A) 3.400</label>
+                <label class="option"><input type="radio" name="q2" value="B"> B) 3.500</label>
+                <label class="option"><input type="radio" name="q2" value="C"> C) 3.460</label>
+                <label class="option"><input type="radio" name="q2" value="D"> D) 3.550</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 3: Bir bahçede 345 elma ağacı var. Bunların 123 tanesi kırmızı elma veriyor. Kaç tanesi kırmızı elma vermez?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q3" value="A"> A) 222</label>
+                <label class="option"><input type="radio" name="q3" value="B"> B) 212</label>
+                <label class="option"><input type="radio" name="q3" value="C"> C) 232</label>
+                <label class="option"><input type="radio" name="q3" value="D"> D) 242</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 4: 2, 4, 8, 16, ___ sayı örüntüsünün kuralı nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q4" value="A"> A) 2 katına çıkıyor</label>
+                <label class="option"><input type="radio" name="q4" value="B"> B) 4'er artıyor</label>
+                <label class="option"><input type="radio" name="q4" value="C"> C) 8'er artıyor</label>
+                <label class="option"><input type="radio" name="q4" value="D"> D) 3 katına çıkıyor</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 5: 5.678 - 2.345 = ?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q5" value="A"> A) 3.333</label>
+                <label class="option"><input type="radio" name="q5" value="B"> B) 3.233</label>
+                <label class="option"><input type="radio" name="q5" value="C"> C) 3.433</label>
+                <label class="option"><input type="radio" name="q5" value="D"> D) 3.133</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 6: 325.478 sayısında 5 rakamının basamak değeri kaçtır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q6" value="A"> A) 5</label>
+                <label class="option"><input type="radio" name="q6" value="B"> B) 500</label>
+                <label class="option"><input type="radio" name="q6" value="C"> C) 5.000</label>
+                <label class="option"><input type="radio" name="q6" value="D"> D) 50.000</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 7: 6.000 + 500 + 40 + 3 = ?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q7" value="A"> A) 6.543</label>
+                <label class="option"><input type="radio" name="q7" value="B"> B) 6.453</label>
+                <label class="option"><input type="radio" name="q7" value="C"> C) 6.534</label>
+                <label class="option"><input type="radio" name="q7" value="D"> D) 6.345</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 8: 456 × 100 = ?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q8" value="A"> A) 4.560</label>
+                <label class="option"><input type="radio" name="q8" value="B"> B) 45.600</label>
+                <label class="option"><input type="radio" name="q8" value="C"> C) 456</label>
+                <label class="option"><input type="radio" name="q8" value="D"> D) 4.506</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 9: 8.234 sayısını en yakın onluğa yuvarlarsak kaç olur?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q9" value="A"> A) 8.230</label>
+                <label class="option"><input type="radio" name="q9" value="B"> B) 8.240</label>
+                <label class="option"><input type="radio" name="q9" value="C"> C) 8.200</label>
+                <label class="option"><input type="radio" name="q9" value="D"> D) 8.250</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 10: 144 ÷ 12 = ?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q10" value="A"> A) 12</label>
+                <label class="option"><input type="radio" name="q10" value="B"> B) 14</label>
+                <label class="option"><input type="radio" name="q10" value="C"> C) 10</label>
+                <label class="option"><input type="radio" name="q10" value="D"> D) 16</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 11: Bir sınıfta 24 öğrenci var. Her öğrenciye 3 defter verilirse toplam kaç defter gerekir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q11" value="A"> A) 72</label>
+                <label class="option"><input type="radio" name="q11" value="B"> B) 62</label>
+                <label class="option"><input type="radio" name="q11" value="C"> C) 82</label>
+                <label class="option"><input type="radio" name="q11" value="D"> D) 52</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 12: 234 × 12 = ?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q12" value="A"> A) 2.808</label>
+                <label class="option"><input type="radio" name="q12" value="B"> B) 2.708</label>
+                <label class="option"><input type="radio" name="q12" value="C"> C) 2.608</label>
+                <label class="option"><input type="radio" name="q12" value="D"> D) 2.908</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 13: 1.234 + 2.345 + 1.111 = ?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q13" value="A"> A) 4.690</label>
+                <label class="option"><input type="radio" name="q13" value="B"> B) 4.590</label>
+                <label class="option"><input type="radio" name="q13" value="C"> C) 4.790</label>
+                <label class="option"><input type="radio" name="q13" value="D"> D) 4.490</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 14: 123 × 10 = ?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q14" value="A"> A) 1.230</label>
+                <label class="option"><input type="radio" name="q14" value="B"> B) 123</label>
+                <label class="option"><input type="radio" name="q14" value="C"> C) 12.300</label>
+                <label class="option"><input type="radio" name="q14" value="D"> D) 1.203</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 15: 'Beş yüz on iki bin yüz otuz dört' sayısını rakamla yazınız.</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q15" value="A"> A) 512.134</label>
+                <label class="option"><input type="radio" name="q15" value="B"> B) 52.134</label>
+                <label class="option"><input type="radio" name="q15" value="C"> C) 5.121.134</label>
+                <label class="option"><input type="radio" name="q15" value="D"> D) 512.104</label>
+            </div>
+        </div>
+<div class="section-title fen">🔬 FEN BİLİMLERİ (15 Soru)</div>
+        <div class="question">
+            <div class="question-num">Soru 16: Ses hangi ortamda yayılmaz?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q16" value="A"> A) Su</label>
+                <label class="option"><input type="radio" name="q16" value="B"> B) Hava</label>
+                <label class="option"><input type="radio" name="q16" value="C"> C) Boşluk (vakum)</label>
+                <label class="option"><input type="radio" name="q16" value="D"> D) Katı cisimler</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 17: Bitkilerin fotosentez yapabilmesi için neye ihtiyacı vardır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q17" value="A"> A) Karanlık</label>
+                <label class="option"><input type="radio" name="q17" value="B"> B) Güneş ışığı</label>
+                <label class="option"><input type="radio" name="q17" value="C"> C) Soğuk hava</label>
+                <label class="option"><input type="radio" name="q17" value="D"> D) Rüzgar</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 18: Aşağıdakilerden hangisi çevre kirliliğine neden olur?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q18" value="A"> A) Ağaç dikmek</label>
+                <label class="option"><input type="radio" name="q18" value="B"> B) Geri dönüşüm</label>
+                <label class="option"><input type="radio" name="q18" value="C"> C) Fabrika atıkları</label>
+                <label class="option"><input type="radio" name="q18" value="D"> D) Bisiklet sürmek</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 19: Geri dönüşüm neden önemlidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q19" value="A"> A) Daha fazla çöp üretmek için</label>
+                <label class="option"><input type="radio" name="q19" value="B"> B) Doğayı korumak için</label>
+                <label class="option"><input type="radio" name="q19" value="C"> C) Enerji harcamak için</label>
+                <label class="option"><input type="radio" name="q19" value="D"> D) Fabrika açmak için</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 20: Aşağıdakilerden hangisi bir kuvvet çeşididir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q20" value="A"> A) Işık</label>
+                <label class="option"><input type="radio" name="q20" value="B"> B) Ses</label>
+                <label class="option"><input type="radio" name="q20" value="C"> C) Sürtünme kuvveti</label>
+                <label class="option"><input type="radio" name="q20" value="D"> D) Sıcaklık</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 21: Suyun kaynaması hangi hal değişimidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q21" value="A"> A) Erime</label>
+                <label class="option"><input type="radio" name="q21" value="B"> B) Donma</label>
+                <label class="option"><input type="radio" name="q21" value="C"> C) Buharlaşma</label>
+                <label class="option"><input type="radio" name="q21" value="D"> D) Yoğuşma</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 22: Maddenin katı, sıvı ve gaz halleri arasındaki geçişlere ne ad verilir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q22" value="A"> A) Erime</label>
+                <label class="option"><input type="radio" name="q22" value="B"> B) Hal değişimi</label>
+                <label class="option"><input type="radio" name="q22" value="C"> C) Buharlaşma</label>
+                <label class="option"><input type="radio" name="q22" value="D"> D) Yoğuşma</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 23: Mıknatısın özelliği aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q23" value="A"> A) Demir çeker</label>
+                <label class="option"><input type="radio" name="q23" value="B"> B) Su çeker</label>
+                <label class="option"><input type="radio" name="q23" value="C"> C) Plastik çeker</label>
+                <label class="option"><input type="radio" name="q23" value="D"> D) Cam çeker</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 24: Canlıların yaşam döngüsü neyi ifade eder?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q24" value="A"> A) Sadece doğum</label>
+                <label class="option"><input type="radio" name="q24" value="B"> B) Doğum, büyüme, üreme ve ölüm</label>
+                <label class="option"><input type="radio" name="q24" value="C"> C) Sadece ölüm</label>
+                <label class="option"><input type="radio" name="q24" value="D"> D) Sadece büyüme</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 25: Besinlerin enerji kaynağı olarak kullanılması hangi sistem ile ilgilidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q25" value="A"> A) Sinir sistemi</label>
+                <label class="option"><input type="radio" name="q25" value="B"> B) Sindirim sistemi</label>
+                <label class="option"><input type="radio" name="q25" value="C"> C) İskelet sistemi</label>
+                <label class="option"><input type="radio" name="q25" value="D"> D) Kas sistemi</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 26: Vücudumuzda kasların görevi nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q26" value="A"> A) Besinleri sindirmek</label>
+                <label class="option"><input type="radio" name="q26" value="B"> B) Hareket sağlamak</label>
+                <label class="option"><input type="radio" name="q26" value="C"> C) Kanı temizlemek</label>
+                <label class="option"><input type="radio" name="q26" value="D"> D) Oksijen almak</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 27: Buzun suya dönüşmesi hangi hal değişimidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q27" value="A"> A) Donma</label>
+                <label class="option"><input type="radio" name="q27" value="B"> B) Erime</label>
+                <label class="option"><input type="radio" name="q27" value="C"> C) Buharlaşma</label>
+                <label class="option"><input type="radio" name="q27" value="D"> D) Yoğuşma</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 28: Hangisi yenilenebilir enerji kaynağıdır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q28" value="A"> A) Kömür</label>
+                <label class="option"><input type="radio" name="q28" value="B"> B) Doğalgaz</label>
+                <label class="option"><input type="radio" name="q28" value="C"> C) Güneş enerjisi</label>
+                <label class="option"><input type="radio" name="q28" value="D"> D) Petrol</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 29: Elektrik enerjisi neye dönüşebilir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q29" value="A"> A) Sadece ısıya</label>
+                <label class="option"><input type="radio" name="q29" value="B"> B) Sadece ışığa</label>
+                <label class="option"><input type="radio" name="q29" value="C"> C) Isı, ışık ve harekete</label>
+                <label class="option"><input type="radio" name="q29" value="D"> D) Hiçbirine dönüşmez</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 30: Hangisi bir enerji türü değildir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q30" value="A"> A) Isı enerjisi</label>
+                <label class="option"><input type="radio" name="q30" value="B"> B) Işık enerjisi</label>
+                <label class="option"><input type="radio" name="q30" value="C"> C) Plastik</label>
+                <label class="option"><input type="radio" name="q30" value="D"> D) Ses enerjisi</label>
+            </div>
+        </div>
+<div class="section-title sosyal">🌍 SOSYAL BİLGİLER (15 Soru)</div>
+        <div class="question">
+            <div class="question-num">Soru 31: Toplum hayatında dayanışmanın önemi nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q31" value="A"> A) Bireysel çıkarı artırmak</label>
+                <label class="option"><input type="radio" name="q31" value="B"> B) Birlikte yaşamayı ve gelişmeyi sağlamak</label>
+                <label class="option"><input type="radio" name="q31" value="C"> C) Başkalarından daha üstün olmak</label>
+                <label class="option"><input type="radio" name="q31" value="D"> D) İzolasyon yaratmak</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 32: Hava olaylarını gözlemledikten sonra bulgularımızı nasıl aktarırız?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q32" value="A"> A) Sözel olarak</label>
+                <label class="option"><input type="radio" name="q32" value="B"> B) Yazılı olarak</label>
+                <label class="option"><input type="radio" name="q32" value="C"> C) Resimli grafiklere aktararak</label>
+                <label class="option"><input type="radio" name="q32" value="D"> D) Görmezden gelerek</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 33: Kurtuluş Savaşı'nda ne mücadelesi verilmiştir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q33" value="A"> A) Ekonomik mücadele</label>
+                <label class="option"><input type="radio" name="q33" value="B"> B) Milletin bağımsızlığı ve vatan topraklarını koruma mücadelesi verilmiştir</label>
+                <label class="option"><input type="radio" name="q33" value="C"> C) Sadece ekonomik faaliyetler yapılmıştır</label>
+                <label class="option"><input type="radio" name="q33" value="D"> D) Dış ticaret geliştirilmiştir</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 34: Çevremizi temiz tutmak neden önemlidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q34" value="A"> A) Önemli değildir</label>
+                <label class="option"><input type="radio" name="q34" value="B"> B) Sağlıklı yaşam için gereklidir</label>
+                <label class="option"><input type="radio" name="q34" value="C"> C) Sadece görüntü için</label>
+                <label class="option"><input type="radio" name="q34" value="D"> D) Ceza almamak için</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 35: Aşağıdakilerden hangisi hava olayıdır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q35" value="A"> A) Deprem</label>
+                <label class="option"><input type="radio" name="q35" value="B"> B) Tsunami</label>
+                <label class="option"><input type="radio" name="q35" value="C"> C) Yağmur</label>
+                <label class="option"><input type="radio" name="q35" value="D"> D) Volkan</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 36: Kendini farklı özelliklere sahip birisinin yerine koymaya ne denir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q36" value="A"> A) Tarafgirlik</label>
+                <label class="option"><input type="radio" name="q36" value="B"> B) Empati</label>
+                <label class="option"><input type="radio" name="q36" value="C"> C) Judoka</label>
+                <label class="option"><input type="radio" name="q36" value="D"> D) Gıpta</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 37: Başkasının duygularını anlamaya çalışmak ne demektir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q37" value="A"> A) Alay etmek</label>
+                <label class="option"><input type="radio" name="q37" value="B"> B) Empati kurmak</label>
+                <label class="option"><input type="radio" name="q37" value="C"> C) Izleme</label>
+                <label class="option"><input type="radio" name="q37" value="D"> D) Taklit etmek</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 38: Millî kültürü yansıtan ögeler nelerdir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q38" value="A"> A) Sadece yemekler</label>
+                <label class="option"><input type="radio" name="q38" value="B"> B) Geleneksel el sanatları, müzikler, oyunlar</label>
+                <label class="option"><input type="radio" name="q38" value="C"> C) Sadece giyimler</label>
+                <label class="option"><input type="radio" name="q38" value="D"> D) Sadece dances</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 39: Aile büyüklerimizin deneyimlerinden ne öğreniriz?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q39" value="A"> A) Hiçbir şey</label>
+                <label class="option"><input type="radio" name="q39" value="B"> B) Geçmiş ve değerlerimizi</label>
+                <label class="option"><input type="radio" name="q39" value="C"> C) Sadece yemek yapmayı</label>
+                <label class="option"><input type="radio" name="q39" value="D"> D) Sadece oyun oynamayı</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 40: Atatürk'ün önderliğinde kurulan yeni devletin adı nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q40" value="A"> A) Osmanlı Devleti</label>
+                <label class="option"><input type="radio" name="q40" value="B"> B) Türkiye Cumhuriyeti</label>
+                <label class="option"><input type="radio" name="q40" value="C"> C) Selçuklu Devleti</label>
+                <label class="option"><input type="radio" name="q40" value="D"> D) Bizans İmparatorluğu</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 41: Farklı özelliklere sahip bireylere nasıl davranmalıyız?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q41" value="A"> A) Alay etmeliyiz</label>
+                <label class="option"><input type="radio" name="q41" value="B"> B) Saygı ile karşılamalıyız</label>
+                <label class="option"><input type="radio" name="q41" value="C"> C) Ceza vermeliyiz</label>
+                <label class="option"><input type="radio" name="q41" value="D"> D) İhmal etmeliyiz</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 42: Haritada yönleri belirlemek için ne kullanılır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q42" value="A"> A) Cetvel</label>
+                <label class="option"><input type="radio" name="q42" value="B"> B) Pusula</label>
+                <label class="option"><input type="radio" name="q42" value="C"> C) Termometre</label>
+                <label class="option"><input type="radio" name="q42" value="D"> D) Saat</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 43: Doğal unsur aşağıdakilerden hangisidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q43" value="A"> A) Fabrika</label>
+                <label class="option"><input type="radio" name="q43" value="B"> B) Köprü</label>
+                <label class="option"><input type="radio" name="q43" value="C"> C) Dağ</label>
+                <label class="option"><input type="radio" name="q43" value="D"> D) Yol</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 44: Yaşamınızla ilgili olayları nasıl sıramalısınız?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q44" value="A"> A) Rastgele</label>
+                <label class="option"><input type="radio" name="q44" value="B"> B) Gerçekleşme zamanına göre</label>
+                <label class="option"><input type="radio" name="q44" value="C"> C) Önemine göre</label>
+                <label class="option"><input type="radio" name="q44" value="D"> D) Hoşlandığım sıraya göre</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 45: Bireysel ilgi, ihtiyaç ve yeteneklerinizi tanımanın yararı nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q45" value="A"> A) Hiç yararı yoktur</label>
+                <label class="option"><input type="radio" name="q45" value="B"> B) Kendi kendini tanıyarak geleceğini planlayabilir</label>
+                <label class="option"><input type="radio" name="q45" value="C"> C) Başkalarıyla karşılaştırmak için</label>
+                <label class="option"><input type="radio" name="q45" value="D"> D) Para kazanmak için</label>
+            </div>
+        </div>
+<div class="section-title turkce">📖 TÜRKÇE (15 Soru)</div>
+        <div class="question">
+            <div class="question-num">Soru 46: Yazılı metinde noktalama işaretleri neden önemlidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q46" value="A"> A) Hiç önemli değildir</label>
+                <label class="option"><input type="radio" name="q46" value="B"> B) Metnin anlamını açık kılar</label>
+                <label class="option"><input type="radio" name="q46" value="C"> C) Sadece güzel görünmesi için</label>
+                <label class="option"><input type="radio" name="q46" value="D"> D) Sayfa doldurma için</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 47: Bilgilendirici metin neyi amaçlar?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q47" value="A"> A) Eğlendirmek</label>
+                <label class="option"><input type="radio" name="q47" value="B"> B) Bilgi vermek</label>
+                <label class="option"><input type="radio" name="q47" value="C"> C) Korkutmak</label>
+                <label class="option"><input type="radio" name="q47" value="D"> D) Yazmak</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 48: Cümlede özne neyi ifade eder?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q48" value="A"> A) İşi yapan kişi veya varlık</label>
+                <label class="option"><input type="radio" name="q48" value="B"> B) İşin nerede yapıldığı</label>
+                <label class="option"><input type="radio" name="q48" value="C"> C) İşin ne zaman yapıldığı</label>
+                <label class="option"><input type="radio" name="q48" value="D"> D) İşin nasıl yapıldığı</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 49: Başlık metnin neyi yansıtmalıdır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q49" value="A"> A) Yazarın ismini</label>
+                <label class="option"><input type="radio" name="q49" value="B"> B) İçeriğini ve ana fikrini</label>
+                <label class="option"><input type="radio" name="q49" value="C"> C) Sadece ilk cümleyi</label>
+                <label class="option"><input type="radio" name="q49" value="D"> D) Rastgele seçilir</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 50: Cümlede yüklem neyi ifade eder?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q50" value="A"> A) Kim sorusunun cevabı</label>
+                <label class="option"><input type="radio" name="q50" value="B"> B) Ne yapıldığını/durumu anlatan kısım</label>
+                <label class="option"><input type="radio" name="q50" value="C"> C) Nerede sorusunun cevabı</label>
+                <label class="option"><input type="radio" name="q50" value="D"> D) Neden sorusunun cevabı</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 51: Okuduğunuz metnin konusu nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q51" value="A"> A) Metnin türü</label>
+                <label class="option"><input type="radio" name="q51" value="B"> B) Metnin işlendiği ana konu</label>
+                <label class="option"><input type="radio" name="q51" value="C"> C) Yazarın adı</label>
+                <label class="option"><input type="radio" name="q51" value="D"> D) Yayın tarihi</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 52: Dinlediklerinizin ana fikrini anlamak için ne yapmalısınız?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q52" value="A"> A) Sadece dinlemek</label>
+                <label class="option"><input type="radio" name="q52" value="B"> B) Dikkat etmek ve önemli noktaları belirlemek</label>
+                <label class="option"><input type="radio" name="q52" value="C"> C) Başka şey yapıp dinlemek</label>
+                <label class="option"><input type="radio" name="q52" value="D"> D) Sorulmayan soruları sormak</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 53: Hikâye edici metin hangi ögeleri içermelidir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q53" value="A"> A) Sadece kişi</label>
+                <label class="option"><input type="radio" name="q53" value="B"> B) Kişi, olay, mekân</label>
+                <label class="option"><input type="radio" name="q53" value="C"> C) Sadece mekân</label>
+                <label class="option"><input type="radio" name="q53" value="D"> D) Sadece olay</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 54: Şiir neyi ifade eden bir metin türüdür?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q54" value="A"> A) Tarih bilgisini</label>
+                <label class="option"><input type="radio" name="q54" value="B"> B) Duyguları ve duygularını güzel sözlerle</label>
+                <label class="option"><input type="radio" name="q54" value="C"> C) Bilimsel bilgiyi</label>
+                <label class="option"><input type="radio" name="q54" value="D"> D) Kahramanı</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 55: Yazdıklarınızı düzenlerken neye dikkat etmelisiniz?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q55" value="A"> A) Hiç dikkat etmezsiniz</label>
+                <label class="option"><input type="radio" name="q55" value="B"> B) Dil bilgisi ve anlatım açısından kontrol</label>
+                <label class="option"><input type="radio" name="q55" value="C"> C) Sadece harf boyutuna</label>
+                <label class="option"><input type="radio" name="q55" value="D"> D) Sadece renklendirmeye</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 56: Deyimler metin içinde ne amaçla kullanılır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q56" value="A"> A) Sadece sözcük sayısını artırmak için</label>
+                <label class="option"><input type="radio" name="q56" value="B"> B) Metnin anlamını ve güzelliğini artırmak için</label>
+                <label class="option"><input type="radio" name="q56" value="C"> C) Sayfayı doldurmak için</label>
+                <label class="option"><input type="radio" name="q56" value="D"> D) Okuyucuyu karıştırmak için</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 57: Konuşma stratejileri neyi içerir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q57" value="A"> A) Sadece hızlı konuşmak</label>
+                <label class="option"><input type="radio" name="q57" value="B"> B) Nezaket kuralları ve beden dilini etkin kullanma</label>
+                <label class="option"><input type="radio" name="q57" value="C"> C) Sadece ses yüksekliği</label>
+                <label class="option"><input type="radio" name="q57" value="D"> D) Hiçbiri</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 58: Eş anlamlı sözcükler nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q58" value="A"> A) Zıt anlamlı sözcükler</label>
+                <label class="option"><input type="radio" name="q58" value="B"> B) Aynı veya yakın anlama gelen sözcükler</label>
+                <label class="option"><input type="radio" name="q58" value="C"> C) Farklı anlamlı sözcükler</label>
+                <label class="option"><input type="radio" name="q58" value="D"> D) Anlamsız sözcükler</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 59: 'Damlaya damlaya göl olur' atasözünün anlamı nedir?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q59" value="A"> A) Suyu çok israf etmek</label>
+                <label class="option"><input type="radio" name="q59" value="B"> B) Küçük birikimler zamanla büyük sonuçlar doğurur</label>
+                <label class="option"><input type="radio" name="q59" value="C"> C) Göl su ile dolar</label>
+                <label class="option"><input type="radio" name="q59" value="D"> D) Damla çok önemlidir</label>
+            </div>
+        </div>
+        <div class="question">
+            <div class="question-num">Soru 60: Ana fikir/ana duygu neyi anlatır?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q60" value="A"> A) Metnin en önemli mesajını</label>
+                <label class="option"><input type="radio" name="q60" value="B"> B) Detaylar</label>
+                <label class="option"><input type="radio" name="q60" value="C"> C) Seçenek A ve B</label>
+                <label class="option"><input type="radio" name="q60" value="D"> D) Karakterler</label>
+            </div>
+        </div>
+
+            <div class="button-group">
+                <button class="btn btn-submit" onclick="submitExam()">📤 Sınavı Gönder</button>
+                <button class="btn btn-print" onclick="window.print()">🖨️ Yazdır</button>
+                <button class="btn btn-admin" onclick="openAdminPanel()">🔐 Öğretmen Paneli</button>
+            </div>
+            
+            <div class="submitted-message" id="submittedMessage">
+                ✅ Sınavınız gönderildi. Sayfayı kapatabilirsiniz.
+            </div>
+            
+            <div id="adminModal" class="admin-modal">
+                <div class="admin-content">
+                    <h2>🔐 Öğretmen Girişi</h2>
+                    <input type="password" class="admin-input" id="adminPassword" placeholder="Şifre giriniz" onkeypress="if(event.key==='Enter') verifyAdmin()">
+                    <div class="admin-buttons">
+                        <button class="admin-btn-ok" onclick="verifyAdmin()">Giriş Yap</button>
+                        <button class="admin-btn-cancel" onclick="closeAdminPanel()">Kapat</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result" id="result">
+                <div class="result-header" id="resultHeader">
+                    <h3>📊 SINAV SONUCU</h3>
+                </div>
+                <p id="score"></p>
+                <div id="scoreDetail"></div>
+            </div>
+            
+            <div class="answer-key" id="answerKey">
+                <h3>📝 CEVAP ANAHTARI - Deneme 4</h3>
+                <div class="answers-grid" id="answersGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Şifre hash'lenmiş - kaynak kodda açık şifre YOK
+        const PASSWORD_HASH = "6557739a67283a8de383fc5c0997fbec7c5721a46f28f3235fc9607598d9016b";
+        let timeLeft = 7200;
+        let timerInterval;
+        let studentName = "";
+        let studentClass = "";
+        let examStartTime = "";
+        
+        const answers = {1: "B", 2: "B", 3: "A", 4: "A", 5: "A", 6: "C", 7: "A", 8: "B", 9: "A", 10: "A", 11: "A", 12: "A", 13: "A", 14: "A", 15: "A", 16: "C", 17: "B", 18: "C", 19: "B", 20: "C", 21: "C", 22: "B", 23: "A", 24: "B", 25: "B", 26: "B", 27: "B", 28: "C", 29: "C", 30: "C", 31: "B", 32: "C", 33: "B", 34: "B", 35: "C", 36: "B", 37: "B", 38: "B", 39: "B", 40: "B", 41: "B", 42: "B", 43: "C", 44: "B", 45: "B", 46: "B", 47: "B", 48: "A", 49: "B", 50: "B", 51: "B", 52: "B", 53: "B", 54: "B", 55: "B", 56: "B", 57: "B", 58: "B", 59: "B", 60: "A"};
+        
+        // SHA-256 hash fonksiyonu
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+        
+        function startExam() {
+            const nameInput = document.getElementById('studentName');
+            const classInput = document.getElementById('studentClass');
+            const nameError = document.getElementById('nameError');
+            const classError = document.getElementById('classError');
+            
+            let valid = true;
+            
+            if (!nameInput.value.trim() || nameInput.value.trim().length < 3) {
+                nameError.style.display = 'block';
+                nameInput.style.borderColor = '#e74c3c';
+                valid = false;
+            } else {
+                nameError.style.display = 'none';
+                nameInput.style.borderColor = '#27ae60';
+            }
+            
+            if (!classInput.value.trim()) {
+                classError.style.display = 'block';
+                classInput.style.borderColor = '#e74c3c';
+                valid = false;
+            } else {
+                classError.style.display = 'none';
+                classInput.style.borderColor = '#27ae60';
+            }
+            
+            if (!valid) return;
+            
+            studentName = nameInput.value.trim();
+            studentClass = classInput.value.trim();
+            
+            const now = new Date();
+            examStartTime = now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'});
+            
+            document.getElementById('displayName').textContent = studentName;
+            document.getElementById('displayClass').textContent = studentClass;
+            document.getElementById('displayDate').textContent = examStartTime;
+            
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('examContainer').style.display = 'block';
+            
+            startTimer();
+        }
+        
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmit();
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+            
+            const timerBox = document.getElementById('timerBox');
+            if (timeLeft <= 60) {
+                timerBox.className = 'timer-box danger';
+            } else if (timeLeft <= 600) {
+                timerBox.className = 'timer-box warning';
+            }
+        }
+        
+        async function submitExam() {
+            clearInterval(timerInterval);
+            
+            // Geçen süreyi hesapla (saniye)
+            const elapsedSeconds = 3600 - timeLeft;
+            const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+            const elapsedSecs = elapsedSeconds % 60;
+            const duration = elapsedMinutes + ' dk ' + elapsedSecs + ' sn';
+            
+            // Sonuçları hesapla
+            let matCorrect = 0, fenCorrect = 0, sosyalCorrect = 0, turkceCorrect = 0;
+            let totalEmpty = 0, totalWrong = 0;
+            let studentAnswers = {};
+            
+            for (let i = 1; i <= 60; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                studentAnswers[i] = selected ? selected.value : '';
+                
+                if (!selected) {
+                    totalEmpty++;
+                } else if (selected.value === answers[i]) {
+                    if (i <= 15) matCorrect++;
+                    else if (i <= 30) fenCorrect++;
+                    else if (i <= 45) sosyalCorrect++;
+                    else turkceCorrect++;
+                } else {
+                    totalWrong++;
+                }
+            }
+            
+            const totalCorrect = matCorrect + fenCorrect + sosyalCorrect + turkceCorrect;
+            const percentage = Math.round((totalCorrect / 60) * 100);
+            
+            // API'ye gönder
+            try {
+                await fetch('https://ayaz-sinav-api.azurewebsites.net/api/results', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        studentName: studentName,
+                        studentClass: studentClass,
+                        examNumber: 4,
+                        examDate: examStartTime,
+                        totalCorrect: totalCorrect,
+                        totalWrong: totalWrong,
+                        totalEmpty: totalEmpty,
+                        percentage: percentage,
+                        mathCorrect: matCorrect,
+                        scienceCorrect: fenCorrect,
+                        socialCorrect: sosyalCorrect,
+                        turkishCorrect: turkceCorrect,
+                        duration: duration,
+                        elapsedSeconds: elapsedSeconds,
+                        answers: studentAnswers
+                    })
+                });
+                document.getElementById('submittedMessage').innerHTML = '✅ Sınavınız gönderildi ve kaydedildi!';
+            } catch (e) {
+                document.getElementById('submittedMessage').innerHTML = '✅ Sınavınız gönderildi.';
+            }
+            
+            document.getElementById('submittedMessage').style.display = 'block';
+            
+            // Tüm soruları devre dışı bırak
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.disabled = true;
+            });
+        }
+        
+        async function autoSubmit() {
+            if (!document.getElementById('submittedMessage').style.display || document.getElementById('submittedMessage').style.display === 'none') {
+                clearInterval(timerInterval);
+                
+                // Süre doldu = 120 Dakika
+                const duration = '60 dk 0 sn';
+                const elapsedSeconds = 3600;
+                
+                // Sonuçları hesapla ve gönder
+                let matCorrect = 0, fenCorrect = 0, sosyalCorrect = 0, turkceCorrect = 0;
+                let totalEmpty = 0, totalWrong = 0;
+                let studentAnswers = {};
+                
+                for (let i = 1; i <= 60; i++) {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    studentAnswers[i] = selected ? selected.value : '';
+                    
+                    if (!selected) {
+                        totalEmpty++;
+                    } else if (selected.value === answers[i]) {
+                        if (i <= 15) matCorrect++;
+                        else if (i <= 30) fenCorrect++;
+                        else if (i <= 45) sosyalCorrect++;
+                        else turkceCorrect++;
+                    } else {
+                        totalWrong++;
+                    }
+                }
+                
+                const totalCorrect = matCorrect + fenCorrect + sosyalCorrect + turkceCorrect;
+                const percentage = Math.round((totalCorrect / 60) * 100);
+                
+                try {
+                    await fetch('https://ayaz-sinav-api.azurewebsites.net/api/results', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            studentName: studentName,
+                            studentClass: studentClass,
+                            examNumber: 4,
+                            examDate: examStartTime,
+                            totalCorrect: totalCorrect,
+                            totalWrong: totalWrong,
+                            totalEmpty: totalEmpty,
+                            percentage: percentage,
+                            mathCorrect: matCorrect,
+                            scienceCorrect: fenCorrect,
+                            socialCorrect: sosyalCorrect,
+                            turkishCorrect: turkceCorrect,
+                            duration: duration,
+                            elapsedSeconds: elapsedSeconds,
+                            answers: studentAnswers
+                        })
+                    });
+                } catch (e) {}
+                
+                document.getElementById('submittedMessage').style.display = 'block';
+                document.getElementById('submittedMessage').innerHTML = '⏰ ZAMAN BİTTİ! Sınavınız otomatik olarak gönderilmiştir.';
+                
+                document.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.disabled = true;
+                });
+            }
+        }
+        
+        function openAdminPanel() {
+            document.getElementById('adminModal').style.display = 'block';
+            document.getElementById('adminPassword').focus();
+        }
+        
+        function closeAdminPanel() {
+            document.getElementById('adminModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+        
+        async function verifyAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            const inputHash = await sha256(password);
+            
+            if (inputHash === PASSWORD_HASH) {
+                closeAdminPanel();
+                checkAnswers();
+            } else {
+                alert('❌ Şifre yanlış!');
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+        
+        function checkAnswers() {
+            let correct = 0;
+            let answersHtml = '';
+            
+            for (let i = 1; i <= 60; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const correct_answer = answers[i];
+                
+                if (selected && selected.value === correct_answer) {
+                    correct++;
+                    answersHtml += `<div class="answer-item" style="border-left-color: #28a745;">Soru ${i}: <strong style="color: #28a745;">${correct_answer}</strong> ✓</div>`;
+                } else {
+                    const studentAnswer = selected ? selected.value : "Boş";
+                    answersHtml += `<div class="answer-item" style="border-left-color: #dc3545;">Soru ${i}: Öğr: <strong style="color: #dc3545;">${studentAnswer}</strong> | Doğru: <strong>${correct_answer}</strong> ✗</div>`;
+                }
+            }
+            
+            const percentage = Math.round((correct / 60) * 100);
+            
+            // Öğrenci bilgilerini sonuç başlığında göster
+            document.getElementById('resultHeader').innerHTML = `
+                <h3>📊 SINAV SONUCU</h3>
+                <div style="margin-top: 10px; font-size: 16px;">
+                    <div>👤 Öğrenci: <strong>${studentName}</strong></div>
+                    <div>🏫 Sınıf: <strong>${studentClass}</strong></div>
+                    <div>📅 Tarih: <strong>${examStartTime}</strong></div>
+                    <div>📝 Deneme: <strong>4</strong></div>
+                </div>
+            `;
+            
+            document.getElementById('score').innerHTML = `<strong style="font-size: 24px; color: #155724;">${correct} / 60 Doğru (%${percentage})</strong>`;
+            
+            let matCorrect = 0, fenCorrect = 0, sosyalCorrect = 0, turkceCorrect = 0;
+            for (let i = 1; i <= 60; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected && selected.value === answers[i]) {
+                    if (i <= 15) matCorrect++;
+                    else if (i <= 30) fenCorrect++;
+                    else if (i <= 45) sosyalCorrect++;
+                    else turkceCorrect++;
+                }
+            }
+            
+            document.getElementById('scoreDetail').innerHTML = `
+                <div style="padding: 15px; background: #e8f5e9; border-radius: 5px; margin-top: 10px;">
+                    <h4>📊 Ders Bazlı Sonuçlar:</h4>
+                    <p>📐 Matematik: <strong>${matCorrect}/15</strong></p>
+                    <p>🔬 Fen Bilimleri: <strong>${fenCorrect}/15</strong></p>
+                    <p>🌍 Sosyal Bilgiler: <strong>${sosyalCorrect}/15</strong></p>
+                    <p>📖 Türkçe: <strong>${turkceCorrect}/15</strong></p>
+                </div>
+            `;
+            
+            document.getElementById('answersGrid').innerHTML = answersHtml;
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('answerKey').style.display = 'block';
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Öğretmen modu kontrolü
+        function checkTeacherMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('teacher') === '1') {
+                // Öğretmen modunda - direkt cevap anahtarını göster
+                document.getElementById('startScreen').style.display = 'none';
+                document.getElementById('examContainer').style.display = 'block';
+                document.getElementById('timerBox').style.display = 'none';
+                document.getElementById('studentInfoDisplay').innerHTML = '<span style="font-size: 20px;">🔐 ÖĞRETMEN MODU - Deneme 4</span>';
+                
+                // Cevap anahtarını göster
+                showAnswerKey();
+            }
+        }
+        
+        function showAnswerKey() {
+            let answersHtml = '';
+            for (let i = 1; i <= 60; i++) {
+                answersHtml += '<div class="answer-item" style="border-left-color: #8e44ad;">Soru ' + i + ': <strong style="color: #8e44ad;">' + answers[i] + '</strong></div>';
+            }
+            document.getElementById('answersGrid').innerHTML = answersHtml;
+            document.getElementById('answerKey').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.querySelector('.button-group').innerHTML = '<a href="index.html" class="btn btn-admin" style="text-decoration:none;">🏠 Ana Sayfaya Dön</a>';
+        }
+        
+        window.addEventListener('load', checkTeacherMode);
+        
+        // Öğretmen modu kontrolü
+        function checkTeacherMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('teacher') === '1') {
+                // Öğretmen modunda - direkt cevap anahtarını göster
+                document.getElementById('startScreen').style.display = 'none';
+                document.getElementById('examContainer').style.display = 'block';
+                document.getElementById('timerBox').style.display = 'none';
+                document.getElementById('studentInfoDisplay').innerHTML = '<span style="font-size: 20px;">🔐 ÖĞRETMEN MODU - Deneme 4</span>';
+                
+                // Cevap anahtarını göster
+                showAnswerKey();
+            }
+        }
+        
+        function showAnswerKey() {
+            let answersHtml = '';
+            for (let i = 1; i <= 60; i++) {
+                answersHtml += '<div class="answer-item" style="border-left-color: #8e44ad;">Soru ' + i + ': <strong style="color: #8e44ad;">' + answers[i] + '</strong></div>';
+            }
+            document.getElementById('answersGrid').innerHTML = answersHtml;
+            document.getElementById('answerKey').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.querySelector('.button-group').innerHTML = '<a href="index.html" class="btn btn-admin" style="text-decoration:none;">🏠 Ana Sayfaya Dön</a>';
+        }
+        
+        window.addEventListener('load', checkTeacherMode);
+        
+        window.addEventListener('click', (e) => {
+            if (e.target.id === 'adminModal') {
+                closeAdminPanel();
+            }
+        });
+    </script>
+</body>
+</html>
+
