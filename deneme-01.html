@@ -1,1 +1,150 @@
-<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><title>Deneme 1</title></head><body><h1>Test</h1></body></html>
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Deneme 1</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;padding:20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}.container{max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}.timer{position:fixed;top:20px;right:20px;background:#e74c3c;color:white;padding:15px 30px;border-radius:10px;font-size:24px;font-weight:bold;z-index:1000;box-shadow:0 5px 15px rgba(0,0,0,0.3)}.subject{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:15px 20px;margin:25px 0 15px;border-radius:8px;font-size:18px;font-weight:bold;box-shadow:0 3px 10px rgba(0,0,0,0.2)}.question{margin:15px 0;padding:20px;background:#f8f9fa;border-radius:8px;border-left:4px solid #667eea;box-shadow:0 2px 5px rgba(0,0,0,0.1)}.question strong{color:#2c3e50;font-size:16px}.options{margin-top:12px}.options label{display:block;margin:10px 0;padding:12px 15px;background:white;border-radius:6px;cursor:pointer;border:2px solid #e0e0e0;transition:all 0.3s}.options label:hover{border-color:#667eea;background:#f0f4ff;transform:translateX(5px)}.options input{margin-right:10px;cursor:pointer}button{background:linear-gradient(135deg,#27ae60,#229954);color:white;padding:15px 40px;border:none;border-radius:8px;font-size:18px;cursor:pointer;margin:25px 0;font-weight:bold;width:100%;box-shadow:0 4px 15px rgba(39,174,96,0.3);transition:all 0.3s}button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(39,174,96,0.4)}.student-info{margin:20px 0;padding:25px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.1)}.student-info h3{color:#2c3e50;margin-bottom:15px;font-size:20px}.student-info input{width:100%;padding:12px 15px;margin:10px 0;border:2px solid #ddd;border-radius:6px;font-size:16px;transition:border 0.3s}.student-info input:focus{outline:none;border-color:#667eea}h1{text-align:center;color:#2c3e50;margin-bottom:10px;font-size:28px}p{text-align:center;color:#7f8c8d;font-size:16px;margin:10px 0}</style>
+</head>
+<body>
+<div id="timer" class="timer">120:00</div>
+<div class="container">
+<h1>4. Sınıf Bursluluk Sınavı - Deneme 1</h1>
+<p>⏱️ Süre: 120 Dakika | 📋 60 Soru (Mat:15, Fen:15, Sos:15, Tür:15)</p>
+<div id="studentSection" class="student-info">
+<h3>📝 Öğrenci Bilgileri</h3>
+<input type="text" id="studentName" placeholder="Adınız Soyadınız *" required>
+<input type="text" id="studentClass" placeholder="Sınıfınız (4-A) *" required>
+<button onclick="startExam()">Sınavı Başlat</button>
+</div>
+<div id="examSection" style="display:none">
+<div class="subject">📐 MATEMATİK</div>
+<div class="question"><strong>1.</strong> 847.526 sayısının onbinler basamağındaki rakamın basamak değeri kaçtır?<div class="options"><label><input type="radio" name="m1" value="0">40.000</label><label><input type="radio" name="m1" value="1">4.000</label><label><input type="radio" name="m1" value="2">400</label><label><input type="radio" name="m1" value="3">4</label></div></div>
+<div class="question"><strong>2.</strong> En büyük 5 basamaklı çift sayıdan en küçük 4 basamaklı tek sayıyı çıkarırsak kaç buluruz?<div class="options"><label><input type="radio" name="m2" value="0">98.999</label><label><input type="radio" name="m2" value="1">98.998</label><label><input type="radio" name="m2" value="2">89.999</label><label><input type="radio" name="m2" value="3">88.999</label></div></div>
+<div class="question"><strong>3.</strong> 678 × 94 işleminin sonucu kaçtır?<div class="options"><label><input type="radio" name="m3" value="0">63.732</label><label><input type="radio" name="m3" value="1">64.732</label><label><input type="radio" name="m3" value="2">62.732</label><label><input type="radio" name="m3" value="3">63.632</label></div></div>
+<div class="question"><strong>4.</strong> 156.000 ÷ 1.000 işleminin sonucu kaçtır?<div class="options"><label><input type="radio" name="m4" value="0">156</label><label><input type="radio" name="m4" value="1">1.560</label><label><input type="radio" name="m4" value="2">15,6</label><label><input type="radio" name="m4" value="3">1,56</label></div></div>
+<div class="question"><strong>5.</strong> Bir fabrika 56 günde 19.600 ürün üretiyor. Günlük ortalama üretim kaçtır?<div class="options"><label><input type="radio" name="m5" value="0">350</label><label><input type="radio" name="m5" value="1">360</label><label><input type="radio" name="m5" value="2">340</label><label><input type="radio" name="m5" value="3">370</label></div></div>
+<div class="question"><strong>6.</strong> 23.456 sayısını en yakın binliğe yuvarlarsan kaç bulursun?<div class="options"><label><input type="radio" name="m6" value="0">23.000</label><label><input type="radio" name="m6" value="1">24.000</label><label><input type="radio" name="m6" value="2">23.500</label><label><input type="radio" name="m6" value="3">20.000</label></div></div>
+<div class="question"><strong>7.</strong> 8.568 ÷ 84 işleminin bölümü kaçtır?<div class="options"><label><input type="radio" name="m7" value="0">102</label><label><input type="radio" name="m7" value="1">101</label><label><input type="radio" name="m7" value="2">103</label><label><input type="radio" name="m7" value="3">100</label></div></div>
+<div class="question"><strong>8.</strong> 62.845 - 27.968 işleminin sonucu kaçtır?<div class="options"><label><input type="radio" name="m8" value="0">34.877</label><label><input type="radio" name="m8" value="1">35.877</label><label><input type="radio" name="m8" value="2">34.777</label><label><input type="radio" name="m8" value="3">33.877</label></div></div>
+<div class="question"><strong>9.</strong> 920 × 25 işlemini kısa yoldan yapmak için hangi yöntem kullanılır?<div class="options"><label><input type="radio" name="m9" value="0">920 × 100 ÷ 4</label><label><input type="radio" name="m9" value="1">920 ÷ 4 × 100</label><label><input type="radio" name="m9" value="2">Her ikisi de</label><label><input type="radio" name="m9" value="3">Hiçbiri</label></div></div>
+<div class="question"><strong>10.</strong> 150.000 - 87.456 işleminin sonucu kaçtır?<div class="options"><label><input type="radio" name="m10" value="0">62.544</label><label><input type="radio" name="m10" value="1">63.544</label><label><input type="radio" name="m10" value="2">62.444</label><label><input type="radio" name="m10" value="3">61.544</label></div></div>
+<div class="question"><strong>11.</strong> 24.192 elma 72 kutuya eşit paylaştırılıyor. Her kutuda kaç elma var?<div class="options"><label><input type="radio" name="m11" value="0">336</label><label><input type="radio" name="m11" value="1">346</label><label><input type="radio" name="m11" value="2">326</label><label><input type="radio" name="m11" value="3">356</label></div></div>
+<div class="question"><strong>12.</strong> 1.234 × 7 işlemini tahmin etmek için 1.234'ü en yakın yüzlüğe yuvarla ve 7 ile çarp. Sonuç?<div class="options"><label><input type="radio" name="m12" value="0">8.400</label><label><input type="radio" name="m12" value="1">8.600</label><label><input type="radio" name="m12" value="2">8.200</label><label><input type="radio" name="m12" value="3">9.000</label></div></div>
+<div class="question"><strong>13.</strong> 45.678 + 1.200 işlemini zihinden yapmak için?<div class="options"><label><input type="radio" name="m13" value="0">46.878</label><label><input type="radio" name="m13" value="1">46.778</label><label><input type="radio" name="m13" value="2">47.878</label><label><input type="radio" name="m13" value="3">45.878</label></div></div>
+<div class="question"><strong>14.</strong> 875 × 8 işleminin sonucu kaçtır?<div class="options"><label><input type="radio" name="m14" value="0">7.000</label><label><input type="radio" name="m14" value="1">6.800</label><label><input type="radio" name="m14" value="2">7.200</label><label><input type="radio" name="m14" value="3">6.900</label></div></div>
+<div class="question"><strong>15.</strong> Sayı örüntüsü: 5, 15, 45, 135, ... Kuralı nedir?<div class="options"><label><input type="radio" name="m15" value="0">3 ile çarp</label><label><input type="radio" name="m15" value="1">10 ekle</label><label><input type="radio" name="m15" value="2">5 ile çarp</label><label><input type="radio" name="m15" value="3">30 ekle</label></div></div>
+<div class="subject">🔬 FEN BİLİMLERİ</div>
+<div class="question"><strong>1.</strong> Granit hangi tür kayaçtır?<div class="options"><label><input type="radio" name="f1" value="0">Magmatik</label><label><input type="radio" name="f1" value="1">Tortul</label><label><input type="radio" name="f1" value="2">Başkalaşım</label><label><input type="radio" name="f1" value="3">Metamorfik</label></div></div>
+<div class="question"><strong>2.</strong> Kömür hangi kayaç türündendir?<div class="options"><label><input type="radio" name="f2" value="0">Tortul</label><label><input type="radio" name="f2" value="1">Magmatik</label><label><input type="radio" name="f2" value="2">Başkalaşım</label><label><input type="radio" name="f2" value="3">Volkanik</label></div></div>
+<div class="question"><strong>3.</strong> Dünya kendi etrafında dönme hareketini kaç saatte tamamlar?<div class="options"><label><input type="radio" name="f3" value="0">24</label><label><input type="radio" name="f3" value="1">12</label><label><input type="radio" name="f3" value="2">48</label><label><input type="radio" name="f3" value="3">365</label></div></div>
+<div class="question"><strong>4.</strong> Dünya'nın Güneş etrafındaki hareketine ne denir?<div class="options"><label><input type="radio" name="f4" value="0">Dolanma</label><label><input type="radio" name="f4" value="1">Dönme</label><label><input type="radio" name="f4" value="2">Rotasyon</label><label><input type="radio" name="f4" value="3">Deviasyon</label></div></div>
+<div class="question"><strong>5.</strong> Mevsimlerin oluşmasında hangi faktörler etkilidir?<div class="options"><label><input type="radio" name="f5" value="0">Dolanma + Eksen eğikliği</label><label><input type="radio" name="f5" value="1">Sadece dönme</label><label><input type="radio" name="f5" value="2">Sadece dolanma</label><label><input type="radio" name="f5" value="3">Ay'ın çekimi</label></div></div>
+<div class="question"><strong>6.</strong> Proteinler vücutta hangi işlevi görür?<div class="options"><label><input type="radio" name="f6" value="0">Hücre yapısı ve onarım</label><label><input type="radio" name="f6" value="1">Sadece enerji</label><label><input type="radio" name="f6" value="2">Sadece koruma</label><label><input type="radio" name="f6" value="3">Sindirim</label></div></div>
+<div class="question"><strong>7.</strong> C vitamini eksikliğinde hangi hastalık görülür?<div class="options"><label><input type="radio" name="f7" value="0">Skorbüt</label><label><input type="radio" name="f7" value="1">Raşitizm</label><label><input type="radio" name="f7" value="2">Gece körlüğü</label><label><input type="radio" name="f7" value="3">Anemi</label></div></div>
+<div class="question"><strong>8.</strong> İnsan vücudunun yaklaşık yüzde kaçı sudan oluşur?<div class="options"><label><input type="radio" name="f8" value="0">70</label><label><input type="radio" name="f8" value="1">50</label><label><input type="radio" name="f8" value="2">80</label><label><input type="radio" name="f8" value="3">90</label></div></div>
+<div class="question"><strong>9.</strong> Sigarada bağımlılık yapan madde hangisidir?<div class="options"><label><input type="radio" name="f9" value="0">Nikotin</label><label><input type="radio" name="f9" value="1">Alkol</label><label><input type="radio" name="f9" value="2">Kafein</label><label><input type="radio" name="f9" value="3">Tar</label></div></div>
+<div class="question"><strong>10.</strong> Dengeli beslenme piramidinin en altında hangi grup yer alır?<div class="options"><label><input type="radio" name="f10" value="0">Tahıl grubu</label><label><input type="radio" name="f10" value="1">Et grubu</label><label><input type="radio" name="f10" value="2">Süt grubu</label><label><input type="radio" name="f10" value="3">Yağlar</label></div></div>
+<div class="question"><strong>11.</strong> Kuvvet cisimlere hangi etkileri yapar?<div class="options"><label><input type="radio" name="f11" value="0">Hareket ve şekil değişimi</label><label><input type="radio" name="f11" value="1">Sadece hareket</label><label><input type="radio" name="f11" value="2">Sadece şekil</label><label><input type="radio" name="f11" value="3">Renk değişimi</label></div></div>
+<div class="question"><strong>12.</strong> Mıknatısın aynı kutupları ne yapar?<div class="options"><label><input type="radio" name="f12" value="0">İtişir</label><label><input type="radio" name="f12" value="1">Çeker</label><label><input type="radio" name="f12" value="2">Döner</label><label><input type="radio" name="f12" value="3">Hiçbir şey</label></div></div>
+<div class="question"><strong>13.</strong> Alüminyum mıknatıs tarafından çekilir mi?<div class="options"><label><input type="radio" name="f13" value="0">Hayır</label><label><input type="radio" name="f13" value="1">Evet</label><label><input type="radio" name="f13" value="2">Bazen</label><label><input type="radio" name="f13" value="3">Bilinmez</label></div></div>
+<div class="question"><strong>14.</strong> Fosiller en çok hangi kayaçlarda bulunur?<div class="options"><label><input type="radio" name="f14" value="0">Tortul</label><label><input type="radio" name="f14" value="1">Magmatik</label><label><input type="radio" name="f14" value="2">Başkalaşım</label><label><input type="radio" name="f14" value="3">Volkanik</label></div></div>
+<div class="question"><strong>15.</strong> Gece gündüz oluşumu hangi hareketle gerçekleşir?<div class="options"><label><input type="radio" name="f15" value="0">Dönme</label><label><input type="radio" name="f15" value="1">Dolanma</label><label><input type="radio" name="f15" value="2">Her ikisi</label><label><input type="radio" name="f15" value="3">Hiçbiri</label></div></div>
+<div class="subject">🌍 SOSYAL BİLGİLER</div>
+<div class="question"><strong>1.</strong> TC Kimlik Numarası kaç haneden oluşur?<div class="options"><label><input type="radio" name="s1" value="0">11</label><label><input type="radio" name="s1" value="1">10</label><label><input type="radio" name="s1" value="2">9</label><label><input type="radio" name="s1" value="3">12</label></div></div>
+<div class="question"><strong>2.</strong> Türkiye Cumhuriyeti'nin kurucusu kimdir?<div class="options"><label><input type="radio" name="s2" value="0">M.Kemal Atatürk</label><label><input type="radio" name="s2" value="1">İ.İnönü</label><label><input type="radio" name="s2" value="2">C.Bayar</label><label><input type="radio" name="s2" value="3">F.Çakmak</label></div></div>
+<div class="question"><strong>3.</strong> Millî Mücadele hangi olayla başladı?<div class="options"><label><input type="radio" name="s3" value="0">19 Mayıs 1919</label><label><input type="radio" name="s3" value="1">23 Nisan 1920</label><label><input type="radio" name="s3" value="2">30 Ağustos 1922</label><label><input type="radio" name="s3" value="3">29 Ekim 1923</label></div></div>
+<div class="question"><strong>4.</strong> Sözlü tarih kaynağı örneği?<div class="options"><label><input type="radio" name="s4" value="0">Dede anıları</label><label><input type="radio" name="s4" value="1">Kitap</label><label><input type="radio" name="s4" value="2">Gazete</label><label><input type="radio" name="s4" value="3">Belge</label></div></div>
+<div class="question"><strong>5.</strong> Türk sanat örneği?<div class="options"><label><input type="radio" name="s5" value="0">Ebru</label><label><input type="radio" name="s5" value="1">Opera</label><label><input type="radio" name="s5" value="2">Bale</label><label><input type="radio" name="s5" value="3">Jazz</label></div></div>
+<div class="question"><strong>6.</strong> Kronolojik sıralama ne demektir?<div class="options"><label><input type="radio" name="s6" value="0">Zaman sırasına göre</label><label><input type="radio" name="s6" value="1">Alfabeye göre</label><label><input type="radio" name="s6" value="2">Önem sırasına göre</label><label><input type="radio" name="s6" value="3">Uzunluğa göre</label></div></div>
+<div class="question"><strong>7.</strong> Pusula hangi yönü gösterir?<div class="options"><label><input type="radio" name="s7" value="0">Kuzey</label><label><input type="radio" name="s7" value="1">Güney</label><label><input type="radio" name="s7" value="2">Doğu</label><label><input type="radio" name="s7" value="3">Batı</label></div></div>
+<div class="question"><strong>8.</strong> Doğal unsur örneği?<div class="options"><label><input type="radio" name="s8" value="0">Dağ</label><label><input type="radio" name="s8" value="1">Köprü</label><label><input type="radio" name="s8" value="2">Yol</label><label><input type="radio" name="s8" value="3">Bina</label></div></div>
+<div class="question"><strong>9.</strong> Beşerî unsur örneği?<div class="options"><label><input type="radio" name="s9" value="0">Fabrika</label><label><input type="radio" name="s9" value="1">Nehir</label><label><input type="radio" name="s9" value="2">Göl</label><label><input type="radio" name="s9" value="3">Orman</label></div></div>
+<div class="question"><strong>10.</strong> Yazılı kaynak örneği?<div class="options"><label><input type="radio" name="s10" value="0">Arşiv belgesi</label><label><input type="radio" name="s10" value="1">Dede anlatısı</label><label><input type="radio" name="s10" value="2">Anıt</label><label><input type="radio" name="s10" value="3">Müze</label></div></div>
+<div class="question"><strong>11.</strong> Geleneksel Türk oyunu?<div class="options"><label><input type="radio" name="s11" value="0">Çelik Çomak</label><label><input type="radio" name="s11" value="1">Basketbol</label><label><input type="radio" name="s11" value="2">Voleybol</label><label><input type="radio" name="s11" value="3">Futbol</label></div></div>
+<div class="question"><strong>12.</strong> Dayanışma örneği?<div class="options"><label><input type="radio" name="s12" value="0">Yardımlaşma</label><label><input type="radio" name="s12" value="1">Kavga</label><label><input type="radio" name="s12" value="2">Bencillik</label><label><input type="radio" name="s12" value="3">Hırsızlık</label></div></div>
+<div class="question"><strong>13.</strong> Kroki çiziminde kullanılmaz?<div class="options"><label><input type="radio" name="s13" value="0">Teleskop</label><label><input type="radio" name="s13" value="1">Kalem</label><label><input type="radio" name="s13" value="2">Cetvel</label><label><input type="radio" name="s13" value="3">Kağıt</label></div></div>
+<div class="question"><strong>14.</strong> Meteoroloji ne ile ilgilenir?<div class="options"><label><input type="radio" name="s14" value="0">Hava</label><label><input type="radio" name="s14" value="1">Deprem</label><label><input type="radio" name="s14" value="2">Toprak</label><label><input type="radio" name="s14" value="3">Bitkiler</label></div></div>
+<div class="question"><strong>15.</strong> Cumhuriyet kaç yılında ilan edildi?<div class="options"><label><input type="radio" name="s15" value="0">1923</label><label><input type="radio" name="s15" value="1">1920</label><label><input type="radio" name="s15" value="2">1922</label><label><input type="radio" name="s15" value="3">1919</label></div></div>
+<div class="subject">📚 TÜRKÇE</div>
+<div class="question"><strong>1.</strong> 'Eli ayağına dolaşmak' deyimi ne demektir?<div class="options"><label><input type="radio" name="t1" value="0">Şaşırmak</label><label><input type="radio" name="t1" value="1">Düşmek</label><label><input type="radio" name="t1" value="2">Koşmak</label><label><input type="radio" name="t1" value="3">Yorulmak</label></div></div>
+<div class="question"><strong>2.</strong> Ana fikir nasıl bulunur?<div class="options"><label><input type="radio" name="t2" value="0">Metni okuyup çıkarım yaparak</label><label><input type="radio" name="t2" value="1">İlk cümleye bakarak</label><label><input type="radio" name="t2" value="2">Son cümleye bakarak</label><label><input type="radio" name="t2" value="3">Başlığa bakarak</label></div></div>
+<div class="question"><strong>3.</strong> Hikayede mutlaka bulunmalı?<div class="options"><label><input type="radio" name="t3" value="0">Olay</label><label><input type="radio" name="t3" value="1">Grafik</label><label><input type="radio" name="t3" value="2">Tablo</label><label><input type="radio" name="t3" value="3">Formül</label></div></div>
+<div class="question"><strong>4.</strong> Nokta hangi cümle sonuna konur?<div class="options"><label><input type="radio" name="t4" value="0">Haber</label><label><input type="radio" name="t4" value="1">Soru</label><label><input type="radio" name="t4" value="2">Emir</label><label><input type="radio" name="t4" value="3">Ünlem</label></div></div>
+<div class="question"><strong>5.</strong> Yanlış yazılmış kelime?<div class="options"><label><input type="radio" name="t5" value="0">Rytim</label><label><input type="radio" name="t5" value="1">Matematik</label><label><input type="radio" name="t5" value="2">Fizik</label><label><input type="radio" name="t5" value="3">Hepsi doğru</label></div></div>
+<div class="question"><strong>6.</strong> Gerçek anlam nedir?<div class="options"><label><input type="radio" name="t6" value="0">Sözlük anlamı</label><label><input type="radio" name="t6" value="1">Mecaz</label><label><input type="radio" name="t6" value="2">Terim</label><label><input type="radio" name="t6" value="3">Yan anlam</label></div></div>
+<div class="question"><strong>7.</strong> 'Gözü yükseklerde' mecaz anlam mı?<div class="options"><label><input type="radio" name="t7" value="0">Evet</label><label><input type="radio" name="t7" value="1">Hayır</label><label><input type="radio" name="t7" value="2">Bazen</label><label><input type="radio" name="t7" value="3">Bilinmez</label></div></div>
+<div class="question"><strong>8.</strong> Şiirde yoktur?<div class="options"><label><input type="radio" name="t8" value="0">Paragraf</label><label><input type="radio" name="t8" value="1">Dize</label><label><input type="radio" name="t8" value="2">Dörtlük</label><label><input type="radio" name="t8" value="3">Uyak</label></div></div>
+<div class="question"><strong>9.</strong> Beden dili neden önemli?<div class="options"><label><input type="radio" name="t9" value="0">Mesajı güçlendirir</label><label><input type="radio" name="t9" value="1">Gereksiz</label><label><input type="radio" name="t9" value="2">Sadece süs</label><label><input type="radio" name="t9" value="3">Önemsiz</label></div></div>
+<div class="question"><strong>10.</strong> Başlık neyi yansıtır?<div class="options"><label><input type="radio" name="t10" value="0">Konuyu</label><label><input type="radio" name="t10" value="1">Yazarı</label><label><input type="radio" name="t10" value="2">Sayfa</label><label><input type="radio" name="t10" value="3">Yılı</label></div></div>
+<div class="question"><strong>11.</strong> 'Damlaya damlaya göl olur' ne?<div class="options"><label><input type="radio" name="t11" value="0">Atasözü</label><label><input type="radio" name="t11" value="1">Deyim</label><label><input type="radio" name="t11" value="2">Tekerleme</label><label><input type="radio" name="t11" value="3">Mani</label></div></div>
+<div class="question"><strong>12.</strong> Büyük harf ne zaman?<div class="options"><label><input type="radio" name="t12" value="0">Özel isim, cümle başı</label><label><input type="radio" name="t12" value="1">Her kelimede</label><label><input type="radio" name="t12" value="2">Sadece sonda</label><label><input type="radio" name="t12" value="3">Hiçbir zaman</label></div></div>
+<div class="question"><strong>13.</strong> Virgül ne için?<div class="options"><label><input type="radio" name="t13" value="0">Ayırma</label><label><input type="radio" name="t13" value="1">Bitirme</label><label><input type="radio" name="t13" value="2">Soru</label><label><input type="radio" name="t13" value="3">Ünlem</label></div></div>
+<div class="question"><strong>14.</strong> Hikaye unsuru değil?<div class="options"><label><input type="radio" name="t14" value="0">Tablo</label><label><input type="radio" name="t14" value="1">Kahraman</label><label><input type="radio" name="t14" value="2">Olay</label><label><input type="radio" name="t14" value="3">Yer</label></div></div>
+<div class="question"><strong>15.</strong> Dinleme kuralı değil?<div class="options"><label><input type="radio" name="t15" value="0">Laf atmak</label><label><input type="radio" name="t15" value="1">Susmak</label><label><input type="radio" name="t15" value="2">Bakmak</label><label><input type="radio" name="t15" value="3">Dikkat etmek</label></div></div>
+<button onclick="submitExam()">✅ Sınavı Bitir</button>
+</div>
+</div>
+<script>
+let startTime,timerInterval;
+const answers={"math":[0,0,0,0,0,0,0,0,2,0,0,0,0,0,0],"science":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"social":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"turkish":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]};
+function startExam(){
+if(!document.getElementById("studentName").value||!document.getElementById("studentClass").value){alert("❌ Lütfen bilgileri doldurun!");return}
+startTime=Date.now();
+document.getElementById("studentSection").style.display="none";
+document.getElementById("examSection").style.display="block";
+window.scrollTo(0,0);
+let timeLeft=7200;
+timerInterval=setInterval(()=>{
+timeLeft--;
+let m=Math.floor(timeLeft/60),s=timeLeft%60;
+document.getElementById("timer").textContent=m+":"+(s<10?"0":"")+s;
+if(timeLeft<=0){clearInterval(timerInterval);submitExam()}
+},1000)
+}
+function submitExam(){
+clearInterval(timerInterval);
+let mc=0,sc=0,soc=0,tc=0,mw=0,sw=0,sow=0,tw=0,me=0,se=0,soe=0,te=0;
+for(let i=1;i<=15;i++){
+let sel=document.querySelector('input[name="m'+i+'"]:checked');
+if(!sel)me++;else if(parseInt(sel.value)===answers.math[i-1])mc++;else mw++
+}
+for(let i=1;i<=15;i++){
+let sel=document.querySelector('input[name="f'+i+'"]:checked');
+if(!sel)se++;else if(parseInt(sel.value)===answers.science[i-1])sc++;else sw++
+}
+for(let i=1;i<=15;i++){
+let sel=document.querySelector('input[name="s'+i+'"]:checked');
+if(!sel)soe++;else if(parseInt(sel.value)===answers.social[i-1])soc++;else sow++
+}
+for(let i=1;i<=15;i++){
+let sel=document.querySelector('input[name="t'+i+'"]:checked');
+if(!sel)te++;else if(parseInt(sel.value)===answers.turkish[i-1])tc++;else tw++
+}
+let total=mc+sc+soc+tc,totalWrong=mw+sw+sow+tw,totalEmpty=me+se+soe+te;
+let elapsed=Math.floor((Date.now()-startTime)/1000);
+let mins=Math.floor(elapsed/60),secs=elapsed%60;
+let duration=mins+"dk "+secs+"sn";
+let percentage=Math.round((total/60)*100);
+fetch("https://ayaz-sinav-api.azurewebsites.net/api/results",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+studentName:document.getElementById("studentName").value,
+studentClass:document.getElementById("studentClass").value,
+examNumber:1,
+totalCorrect:total,
+totalWrong:totalWrong,
+totalEmpty:totalEmpty,
+percentage:percentage,
+mathCorrect:mc,
+scienceCorrect:sc,
+socialCorrect:soc,
+turkishCorrect:tc,
+duration:duration,
+elapsedSeconds:elapsed
+})
+});
+alert("🎯 SINAV BİTTİ!\n\n📐 Mat: "+mc+"/15 (Y:"+mw+" B:"+me+")\n🔬 Fen: "+sc+"/15 (Y:"+sw+" B:"+se+")\n🌍 Sos: "+soc+"/15 (Y:"+sow+" B:"+soe+")\n📚 Tür: "+tc+"/15 (Y:"+tw+" B:"+te+")\n\n✅ DOĞRU: "+total+"/60\n❌ YANLIŞ: "+totalWrong+"\n⭕ BOŞ: "+totalEmpty+"\n\n🏆 BAŞARI: %"+percentage+"\n⏱️ SÜRE: "+duration);
+location.reload()
+}
+</script>
+</body>
+</html>
